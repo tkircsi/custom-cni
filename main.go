@@ -50,9 +50,6 @@ func add(args *skel.CmdArgs) error {
 
 
     // 1. Get the bridge object from the Bridge we created before
-    // 2. Get the namespace of the container
-    // 3. Create a veth on the container and move the host-end veth to host ns.
-    // 4. Attach a host-end veth to linux bridge
 	l, err := netlink.LinkByName(sb.BridgeName)
 	if err != nil {
 		return fmt.Errorf("could not lookup %q: %v", sb.BridgeName, err)
@@ -63,12 +60,15 @@ func add(args *skel.CmdArgs) error {
 		return fmt.Errorf("%q already exists but is not a bridge", sb.BridgeName)
 	}
 
+	// 2. Get the namespace of the container
+    // 3. Create a veth on the container and move the host-end veth to host ns.
+    // 4. Attach a host-end veth to linux bridge
 	netNs, err := ns.GetNS(args.Netns)
 	if err != nil {
 		return err
 	}
 
-	
+
 	return nil
 }
 
